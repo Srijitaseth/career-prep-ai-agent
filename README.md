@@ -83,10 +83,10 @@ Loading and failure states handled on the frontend
 Live Demo
 
 Frontend (Vercel):
- [Add your deployed frontend URL here]
+ [https://career-prep-ai-agent-713ucp11c-srijitaseths-projects.vercel.app/]
 
 Backend (Render):
- [Add your deployed backend URL here]
+ [https://career-prep-ai-agent.onrender.com]
 
 Demo Video
 
