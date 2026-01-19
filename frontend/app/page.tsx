@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
 type Result = {
   resume_feedback: string;
   interview_questions: string[];
@@ -28,20 +30,20 @@ export default function Home() {
     setResult(null);
 
     try {
-      const res = await fetch("http://127.0.0.1:8000/generate", {
+      const res = await fetch(`${API_URL}/generate`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ role, experience, goal }),
       });
 
       if (!res.ok) {
-        throw new Error("Failed to generate guidance. Please try again.");
+        throw new Error("Failed to generate guidance");
       }
 
       const data = await res.json();
       setResult(data);
     } catch (err: any) {
-      setError(err.message);
+      setError(err.message || "Something went wrong");
     } finally {
       setLoading(false);
     }
@@ -62,8 +64,7 @@ export default function Home() {
           </h1>
 
           <p className="max-w-2xl mx-auto text-slate-600 text-lg">
-            Personalized resume feedback, interview preparation,
-            and a focused learning roadmap — tailored to your career goals.
+            Personalized resume feedback, interview preparation, and a focused learning roadmap — tailored to your career goals.
           </p>
         </section>
 
@@ -99,26 +100,13 @@ export default function Home() {
           <button
             onClick={handleGenerate}
             disabled={loading}
-            className="w-full mt-6 bg-indigo-600 text-white py-3 rounded-xl font-medium
-                       hover:bg-indigo-700 transition
-                       disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full mt-6 bg-indigo-600 text-white py-3 rounded-xl font-medium hover:bg-indigo-700 transition disabled:opacity-50"
           >
             {loading ? "Generating insights…" : "Generate Career Guidance"}
           </button>
 
-          {error && (
-            <p className="text-sm text-red-500 mt-2">{error}</p>
-          )}
+          {error && <p className="text-sm text-red-500 mt-2">{error}</p>}
         </section>
-
-        {/* LOADING */}
-        {loading && (
-          <section className="text-center text-slate-600">
-            <p className="animate-pulse">
-              Crafting personalized career insights…
-            </p>
-          </section>
-        )}
 
         {/* RESULTS */}
         {result && (
@@ -151,9 +139,7 @@ export default function Home() {
   );
 }
 
-/* -------------------- */
-/* Reusable Components */
-/* -------------------- */
+/* ---------- Components ---------- */
 
 function Input({
   label,
@@ -168,16 +154,12 @@ function Input({
 }) {
   return (
     <div className="space-y-1">
-      <label className="text-sm font-medium text-slate-700">
-        {label}
-      </label>
+      <label className="text-sm font-medium text-slate-700">{label}</label>
       <input
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3
-                   text-slate-900 placeholder:text-slate-400
-                   focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        className="w-full rounded-xl border border-slate-200 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
       />
     </div>
   );
@@ -196,17 +178,13 @@ function Textarea({
 }) {
   return (
     <div className="space-y-1">
-      <label className="text-sm font-medium text-slate-700">
-        {label}
-      </label>
+      <label className="text-sm font-medium text-slate-700">{label}</label>
       <textarea
         rows={3}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3
-                   text-slate-900 placeholder:text-slate-400
-                   focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        className="w-full rounded-xl border border-slate-200 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
       />
     </div>
   );
@@ -221,10 +199,9 @@ function ResultCard({
 }) {
   return (
     <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6">
-      <h3 className="text-lg font-semibold text-slate-900 mb-3">
-        {title}
-      </h3>
+      <h3 className="text-lg font-semibold text-slate-900 mb-3">{title}</h3>
       {children}
     </div>
   );
 }
+
