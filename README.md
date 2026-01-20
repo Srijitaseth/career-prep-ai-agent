@@ -95,7 +95,7 @@ live application usage
 frontend → backend flow
 explanation of how the system was built
 
- [Add Loom link here]
+ [https://www.loom.com/share/36a0b4c0c1704e5683837e663af32cb5]
 
 Future Improvements
 User authentication and saved sessions
